@@ -84,4 +84,14 @@ public class TbCustomerEntity {
 
         return Objects.hash(id, name, age, city);
     }
+
+    @Override
+    public String toString() {
+        return "TbCustomerEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", city='" + city + '\'' +
+                '}';
+    }
 }

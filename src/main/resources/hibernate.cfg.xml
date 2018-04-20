@@ -16,7 +16,11 @@
     <!-- 显示sql，并且将sql进行格式化-->
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.format_sql">true</property>
-    <!-- 配置一个自动建表 -->
+    <!--
+        create：程序运行时，如果表不存在，自动建表，存在do nothing
+        update：如果表不存在，建表，存在则检查表和类的结构是否一致，如果不一致，则更新表结构
+        validate：如果表结构和类不一致（表中没有相应的字段，则报错，表中有冗余字段不报错）
+     -->
     <property name="hibernate.hbm2ddl.auto">update</property>
       <!-- DB schema will be updated if needed -->
 
