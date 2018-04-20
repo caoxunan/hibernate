@@ -45,13 +45,13 @@ public class TbCustomerEntityTest {
     @Test
     public void testAddCustomer(){
         // 生成对象
-        TbCustomerEntity customer = new TbCustomerEntity(2,"李四",25,"shanghai");
+        // TbCustomerEntity customer = new TbCustomerEntity(2,"lisi",25,"shanghai");
         // 保存对象
-        session.save(customer);
+        // session.save(customer);
 
         TbCustomerEntity customer1 = new TbCustomerEntity();
         customer1.setAge(18);
-        customer1.setName("龙的传人");
+        customer1.setName("lisi");
         customer1.setCity("beijing");
         session.save(customer1);
     }
@@ -78,7 +78,7 @@ public class TbCustomerEntityTest {
     @Test
     public void testDeleteCustomer(){
         TbCustomerEntity customer = new TbCustomerEntity();
-        customer.setId(1);
+        customer.setId(5);
         session.delete(customer);
     }
 
