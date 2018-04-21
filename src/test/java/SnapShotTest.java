@@ -136,4 +136,83 @@ public class SnapShotTest {
 
     }
 
+    @Test
+    public void testClearAndEvict(){
+        Session session = HibernateUtils.openSession();
+        session.beginTransaction();
+
+        /**
+         *  测试clear的用法
+         *  1 查，放入缓存
+         *  2 清空
+         *  2 再查，观察是否发出sql语句
+         */
+        //1 查
+        TbCustomerEntity customer = (TbCustomerEntity) session.get(TbCustomerEntity.class, 1);
+        System.out.println(customer);
+        //2 clear:清空
+//		session.clear();
+        // evict:清空指定对象
+        session.evict(customer);
+
+        //3 再查:观察控制台是否发出sql语句：答案：发
+        TbCustomerEntity customer2 = (TbCustomerEntity) session.get(TbCustomerEntity.class, 1);
+        System.out.println(customer2);
+
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    @Test
+    public void testRefresh(){
+
+        Session session = HibernateUtils.openSession();
+        session.beginTransaction();
+
+        //refresh:功能：不管内存中的数据有没有发生变化，直接将数据库中的数据重新覆盖内存中的数据
+        //它与flush是一个相反的动作
+        //如何证明？
+        /**
+         * 1 查
+         * 2 改
+         * 3 refresh：你会发现控制台会发出select语句，将内存中的值更新
+         * 所有一级缓存中的内容都会更新，所以refresh操作可能会发多个查询语句
+         */
+        // 1  查
+        TbCustomerEntity customer = (TbCustomerEntity) session.get(TbCustomerEntity.class, 1);
+        TbCustomerEntity customer1 = (TbCustomerEntity) session.get(TbCustomerEntity.class, 2);
+        // 2 改
+        customer.setName("rose1");
+        customer1.setName("longwang");
+        // 3 refresh:此时会发select语句
+        session.refresh(customer);
+
+        session.getTransaction().commit();
+        session.close();
+
+    }
+
+    @Test
+    public void testGetAndLoad(){
+        Session session = HibernateUtils.openSession();
+        session.beginTransaction();
+
+        //比较get和load的区别
+        //1 观察get和load的sql语句发出时机
+
+        //get方法立即发出sql语句
+//		Customer customer = (Customer) session.get(Customer.class, 1);
+//		System.out.println(customer);
+
+        //load方法：属于懒加载，如果只用到id属性，是不会发出sql查询语句的
+        //只有用到id以外的其他属性的时候，才会发出sql查询语句
+        TbCustomerEntity customer = (TbCustomerEntity) session.load(TbCustomerEntity.class, 1);
+        //简单的打印id,发出sql语句吗？
+        System.out.println(customer.getId());
+        //发出sql语句吗？
+        System.out.println(customer.getName());
+
+        session.getTransaction().commit();
+        session.close();
+    }
 }

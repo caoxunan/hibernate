@@ -1,10 +1,6 @@
 import com.cxn.entity.TbCustomerEntity;
 import com.cxn.util.HibernateUtils;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -42,7 +38,7 @@ public class Level1CacheExistTest {
         session.getTransaction().commit();
         TbCustomerEntity customerEntity2 = (TbCustomerEntity) session.get(TbCustomerEntity.class, 3);
         System.out.println("customerEntity1:" + customerEntity1);
-        System.out.println("customerEntity2:" + customerEntity1);
+        System.out.println("customerEntity2:" + customerEntity2);
         // 关闭session
         session.getTransaction().commit();
         session.close();
@@ -52,7 +48,7 @@ public class Level1CacheExistTest {
         session2.beginTransaction();
         TbCustomerEntity customerEntity3 = (TbCustomerEntity) session2.get(TbCustomerEntity.class, 3);
         session2.getTransaction().commit();
-        System.out.println("customerEntity3:" + customerEntity2);
+        System.out.println("customerEntity3:" + customerEntity3);
     }
 
 }
